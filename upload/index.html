@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>文件切片上传</title>
+    </head>
+    <body>
+        <input type="file" id="file" />
+
+        <script>
+            const file = document.querySelector("#file");
+
+            // 调用 slice 进行切片
+            const chunksFun = (file, size = 1024) => {
+                const chunks = [];
+                for (let index = 0; index < file.size; index += size) {
+                    chunks.push(file.slice(index, index + size));
+                }
+                return chunks;
+            };
+
+            // 通过promise all 上传切片后的文件
+            const uploads = (chunks, type) => {
+                const chunksList = [];
+                chunks.forEach((chunk, index) => {
+                    const formData = new FormData();
+                    formData.append("index", index);
+                    formData.append("chunks", chunks.length);
+                    formData.append("fileName", "filename");
+                    formData.append("file", chunks[index]);
+                    chunksList.push(
+                        fetch("http://localhost:3000/upload", {
+                            method: "POST",
+                            body: formData,
+                        })
+                    );
+                });
+
+                Promise.all(chunksList).then((res) => {
+                    fetch("http://localhost:3000/merge", {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            fileName: "image",
+                            type,
+                        }),
+                    }).then(() => {
+                        console.log("上传完成");
+                    });
+                });
+            };
+
+            file.addEventListener("change", function (e) {
+                const files = e.target.files[0];
+
+                const type = files.type.split("/")[1];
+
+                const chunks = chunksFun(files);
+
+                uploads(chunks, type);
+            });
+        </script>
+    </body>
+</html>
