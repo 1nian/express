@@ -38,7 +38,7 @@
                 });
 
                 Promise.all(chunksList).then((res) => {
-                    fetch("http://localhost:3000/merge", {
+                    fetch("http://localhost:3000/upload/merge", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",

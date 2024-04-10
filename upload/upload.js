@@ -1,13 +1,17 @@
 import express from "express";
 import multer from "multer";
-import cors from "cors";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const storage = multer.diskStorage({
     // 切片文件存储目录
     destination: (req, file, cb) => {
-        cb(null, "chunks/");
+        cb(null, `${__dirname}/chunks/`);
     },
     // 切片文件名称
     filename: (req, file, cb) => {
@@ -16,24 +20,21 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-const app = express();
+const router = express.Router();
 
-app.use(cors());
-app.use(express.json());
-
-app.post("/upload", upload.single("file"), (req, res) => {
+router.post("/", upload.single("file"), (req, res) => {
     res.send("ok");
 });
 
-app.post("/merge", (req, res) => {
-    const chunksPath = "./chunks";
+router.post("/merge", (req, res) => {
+    const chunksPath = "./upload/chunks";
 
     let files = fs.readdirSync(path.join(process.cwd(), chunksPath));
     files = files.sort((a, b) => a.split("-")[0] - b.split("-")[0]);
 
     const writePath = path.join(
         process.cwd(),
-        `static`,
+        `upload/static`,
         `${new Date().getTime()}.${req.body.type}`
     );
     files.forEach((item) => {
@@ -47,6 +48,4 @@ app.post("/merge", (req, res) => {
     res.send("ok");
 });
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+export default router;
