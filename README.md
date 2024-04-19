@@ -16,5 +16,17 @@ npm i 包名 -D
     - 文件切片 - /upload 目录 
     ```sh
     cd /upload
-    http-server -p 3000
+    http-server -p 3000 // 启动html页面
     ```
+    - ffmpeg 下载 ffmpeg 配置环境变量
+    ```sh
+    cd /ffmpeg
+    node ffmpeg.js
+    ```
+    - puppeteer 爬虫学习
+    ```sh
+    cd /puppeteer
+    node puppeteer.js
+    ```
+        
+    `
