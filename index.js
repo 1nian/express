@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 
 import upload from "./upload/upload.js";
 import sso from "./sso/sso.js";
+import redis from "./redis/redis.js";
 
 const app = express();
 const prot = 3000;
@@ -22,6 +23,7 @@ app.use(
 );
 app.use("/upload", upload);
 app.use("/sso", sso);
+app.use("/redis", redis);
 
 app.get("/", (req, res) => {
     res.send("Hello Node!");
