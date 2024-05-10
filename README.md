@@ -28,5 +28,9 @@ npm i 包名 -D
     cd /puppeteer
     node puppeteer.js
     ```
+    - sso 单点登录
+    ```sh
+    npm run dev
+    ```
         
     `

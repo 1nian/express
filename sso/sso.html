@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SSO 登录</title>
+    </head>
+    <body>
+        <h1>登录</h1>
+
+        <form action="/sso/login" method="get">
+            <label for="username">用户名：</label>
+            <input type="text" id="username" name="username" required />
+            <br />
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password" required />
+            <br />
+            <label for="appID"></label>
+            <input type="hidden" id="appID" name="appID" />
+            <button type="submit">登录</button>
+        </form>
+
+        <script>
+            const appID = location.search.split("=")[1];
+
+            document.getElementById("appID").value = appID;
+
+            // 应用登录 token
+            // const token = location.search.split("=")[1];
+            // if (!token) {
+            //     fetch("http://localhost:3000/sso?appID=appID").then((res) => {
+            //         location.href = res.url;
+            //     });
+            // } else {
+            //     localStorage.setItem("token", token);
+            // }
+        </script>
+    </body>
+</html>
