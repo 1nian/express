@@ -32,5 +32,12 @@ npm i 包名 -D
     ```sh
     npm run dev
     ```
-        
+
+    - mail 邮件服务 
+    ```sh
+    npm run dev
+    ```
+        mail.yaml
+            pass: 邮箱SMTP授权码
+            user: 邮箱地址
     `
